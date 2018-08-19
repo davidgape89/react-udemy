@@ -11,22 +11,6 @@ import './styles/styles.scss';
 import 'react-dates/lib/css/_datepicker.css';
 
 const store = configureStore();
-store.subscribe(() => {
-    console.log(store.getState());
-});
-// addExpense -> Water bill
-store.dispatch(addExpense({description: 'Water bill', amount: 2000, createdAt: 100}));
-// addExpense -> Gas bill
-store.dispatch(addExpense({description: 'Gas bill', amount: 200, createdAt: 500}));
-store.dispatch(addExpense({description: 'Gas bill', amount: 100200, createdAt: 10000}));
-// setTextFilter -> bill
-// store.dispatch(setTextFilter('bill'));
-
-
-// getVisibleExpenses -> print
-const state = store.getState();
-
-console.log(getVisibleExpenses(state.expenses, state.filters));
 
 const jsx = (
     <Provider store={store}>
