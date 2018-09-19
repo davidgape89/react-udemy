@@ -4,12 +4,22 @@ import {
     startAddExpense,
     addExpense, 
     editExpense, 
-    removeExpense 
+    removeExpense,
+    setExpenses,
+    startRetrieveExpenses
 } from '../../actions/expenses';
 import expenses from '../fixtures/expenses';
 import database from '../../firebase/firebase';
 
 const createMockStore = configureMockStore([thunk]);
+
+beforeEach((done) => {
+    let expensesData = {};
+    expenses.forEach(({id, description, note, amount, createdAt}) => {
+        expensesData[id] = {description, note, amount, createdAt}
+    });
+    database.ref('expenses').set(expensesData).then(() => done());
+});
 
 test('should set up remove expense action object', () => {
     const action = removeExpense('123456');
@@ -30,21 +40,6 @@ test('should set up edit expense action object', () => {
         updates: update
     });
 });
-
-// test('should set up addExpense action object with default values', () => {
-//     const action = addExpense();
-
-//     expect(action).toEqual({
-//         type: 'ADD_EXPENSE',
-//         expense: {
-//             id: expect.any(String),
-//             amount: 0,
-//             createdAt: 0,
-//             description: '',
-//             note: ''
-//         }
-//     });
-// })
 
 test('should set up addExpense action object', () => {
     const action = addExpense(expenses[2]);
@@ -105,4 +100,33 @@ test('should add expense with defaults to database and store', (done) => {
         expect(snapshot.val()).toEqual(expenseData);
         done();
     });
-})
+});
+
+test('should setup set expense action object with data', () => {
+    const action = setExpenses(expenses);
+
+    expect(action).toEqual({
+        type: 'SET_EXPENSES',
+        expenses
+    });
+});
+
+test('should retrieve expenses from database and add them to the store', (done) => {
+    const store = createMockStore({});
+    let expensesData = {};
+
+    expenses.forEach(({id, description, note, amount, createdAt}) => {
+        expensesData[id] = {description, note, amount, createdAt}
+    });
+
+    store.dispatch(startRetrieveExpenses()).then(() => {
+        const actions = store.getActions();
+        expect(actions[0]).toEqual({
+            type: 'SET_EXPENSES',
+            expenses: expenses
+        });
+
+        done();
+    });
+});
+
