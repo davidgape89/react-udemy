@@ -38,7 +38,7 @@ test('should not remove expenses if id not found', () => {
 });
 
 test('should edit an expense', () => {
-    const id = '1';
+    const id = '0';
     const updates = {
         amount: 4000, 
         description: 'description',
