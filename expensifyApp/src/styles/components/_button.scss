@@ -10,6 +10,11 @@
     text-decoration: none;
 }
 
-.button--secondary {
+.button--transparent {
     background: none;
 }
+
+.button--secondary {
+    background: $light-grey;
+}
+
