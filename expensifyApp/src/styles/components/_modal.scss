@@ -1,0 +1,21 @@
+.ReactModal__Overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal {
+    background: white;
+    border: 1px solid $light-grey;
+    border-radius: .5rem;
+    max-width: 30rem;
+    outline: none;
+    padding: $l-size;
+    text-align: center;
+}
+
+.modal__actions {
+    display: flex;
+    justify-content: space-between;
+}
+

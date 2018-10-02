@@ -1,19 +1,40 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import ExpenseForm from './ExpenseForm';
+import {RemoveExpenseModal} from './RemoveExpenseModal';
 import { startEditExpense, startRemoveExpense } from '../actions/expenses';
 
 
 export class EditExpensePage extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isModalOpen: false
+        };
+    }
 
     onSubmit = (expense) => {
         this.props.startEditExpense(expense);
         this.props.history.push('/');
     }
 
-    onRemove = () => {
+    onRemoveStart = () => {
+        this.setState(() => ({
+            isModalOpen: true
+        }));
+    }
+
+    removeExpense = () => {
         this.props.startRemoveExpense();
         this.props.history.push('/');
+    }
+
+    onModalClose = () => {
+        this.setState(() => ({
+            isModalOpen: false
+        }));
     }
 
     render() {
@@ -31,10 +52,14 @@ export class EditExpensePage extends React.Component {
                     />
                     <button 
                         className="button button--secondary"
-                        onClick={this.onRemove}>
+                        onClick={this.onRemoveStart}>
                             Remove Expense
                     </button>
                 </div>
+                <RemoveExpenseModal
+                    isModalOpen={this.state.isModalOpen}
+                    onModalClose={this.onModalClose} 
+                    removeExpense={this.removeExpense}/>
             </div>
         )
     }
